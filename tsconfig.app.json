@@ -23,5 +23,8 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  // The "How I think" section is parked (its copy was removed from content/site.ts), so it is left out of the type-check
+  // that `npm run build` runs. Delete this line when you bring the section back.
+  "exclude": ["src/sections/HowIThink.tsx"]
 }

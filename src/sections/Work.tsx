@@ -132,7 +132,7 @@ export function Work() {
       onPointerMove={(e) => {
         x.set(e.clientX)
         y.set(e.clientY)
-        setOver(!!(e.target as HTMLElement).closest('a[href^="/work/"]'))
+        setOver(!!(e.target as HTMLElement).closest('a[href*="/work/"]'))
       }}
       onPointerLeave={() => setOver(false)}
     >
