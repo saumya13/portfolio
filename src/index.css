@@ -1,0 +1,154 @@
+@import 'tailwindcss';
+@import '@fontsource/instrument-serif/400.css';
+@import '@fontsource/instrument-serif/400-italic.css';
+@import '@fontsource-variable/manrope';
+@import '@fontsource-variable/inter';
+@import '@fontsource/homemade-apple/latin-400.css';
+
+@font-face {
+  font-family: 'Bonny';
+  src: url('/fonts/Bonny-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bonny';
+  src: url('/fonts/Bonny-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-display: swap;
+}
+
+
+:root {
+  --paper: #fafafa;
+  --surface: #efefee;
+  --ink: #111111;
+  --muted: #6f6f6f;
+  --line: #e1e1e0;
+  --gutter: clamp(14px, 2.2vw, 40px);
+  --lime: #e8ff8b;
+  --sky: #b8e2fb;
+  --pink: #f09bcf;
+  --yellow: #ffef99;
+  color-scheme: light;
+}
+:root[data-theme='dark'] {
+  --paper: #0c0c0c;
+  --surface: #161616;
+  --ink: #f2f2f1;
+  --muted: #8a8a89;
+  --line: #262626;
+  --lime: #e8ff8b;
+  --sky: #b8e2fb;
+  --pink: #f09bcf;
+  --yellow: #ffef99;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --paper: #0c0c0c;
+    --surface: #161616;
+    --ink: #f2f2f1;
+    --muted: #8a8a89;
+    --line: #262626;
+    --lime: #e8ff8b;
+    --sky: #b8e2fb;
+    --pink: #f09bcf;
+    --yellow: #ffef99;
+    color-scheme: dark;
+  }
+}
+
+/* `dark:` follows the site's own theme toggle rather than the OS setting. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme inline {
+  --font-display: 'Instrument Serif', 'Times New Roman', serif;
+  --font-logo: 'Homemade Apple', cursive;
+  --font-sans: 'Manrope Variable', system-ui, sans-serif;
+  --font-bonny: 'Bonny', 'Instrument Serif', serif;
+  --font-inter: 'Inter Variable', system-ui, sans-serif;
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-lime: var(--lime);
+  --color-sky: var(--sky);
+  --color-pink: var(--pink);
+  --color-yellow: var(--yellow);
+}
+
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.label,
+.eyebrow {
+  font-family: var(--font-bonny);
+  font-weight: 500;
+  font-synthesis: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* The bracketed section headings, e.g. "(What I do)": the same style as .label, a size up. */
+.eyebrow {
+  font-size: 1.2rem;
+  letter-spacing: 0.07em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* Dotted grid lines for "How I think": round dots that slowly travel along each line. */
+@keyframes dots-down { to { background-position-y: 9px; } }
+@keyframes dots-across { to { background-position-x: 9px; } }
+.dots-v {
+  background-image: radial-gradient(circle at 50% 50%, currentColor 1.15px, transparent 1.5px);
+  background-size: 3px 9px;
+  background-repeat: repeat-y;
+  animation: dots-down 1.6s linear infinite;
+}
+.dots-h {
+  background-image: radial-gradient(circle at 50% 50%, currentColor 1.15px, transparent 1.5px);
+  background-size: 9px 3px;
+  background-repeat: repeat-x;
+  animation: dots-across 1.6s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dots-v, .dots-h { animation: none; }
+}
+
+/* The builder-stack icons bob up and down, each offset from its neighbours so the row ripples. */
+@keyframes icon-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+.icon-float { animation: icon-float 3.2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .icon-float { animation: none; } }
+
+/* Theme switch: the new theme is drawn over the old one and revealed by a growing circle (see theme.ts). */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2; }
+html.theme-switching body { transition: none; }
+
+/* A pencil cursor for the hand-drawn "How I think" grid; the hotspot is the pencil tip. */
+.cursor-pencil { cursor: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2232%22 height=%2232%22 viewBox=%220 0 32 32%22%3E%3Cg stroke=%22%23111%22 stroke-width=%221.4%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M3 29 L5.2 21.4 L9.6 25.8 Z%22 fill=%22%23f3d9a4%22/%3E%3Cpath d=%22M3 29 L4.1 25.2 L6.8 27.9 Z%22 fill=%22%23111%22/%3E%3Cpath d=%22M5.2 21.4 L21.6 5 L26 9.4 L9.6 25.8 Z%22 fill=%22%23ffd84d%22/%3E%3Cpath d=%22M21.6 5 L24 2.6 Q25 1.9 26 2.6 L28.4 5 Q29.1 6 28.4 7 L26 9.4 Z%22 fill=%22%23f09bcf%22/%3E%3Cpath d=%22M21.6 5 L26 9.4%22 /%3E%3C/g%3E%3C/svg%3E") 3 29, pointer; }
+
+/* Experiments marquee: slides left by exactly one copy of its text, then repeats. */
+@keyframes marquee { to { transform: translateX(-50%); } }
+.marquee { animation: marquee 18s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .marquee { animation: none; } }
