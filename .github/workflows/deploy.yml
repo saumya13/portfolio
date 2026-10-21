@@ -31,15 +31,11 @@ jobs:
 
       - run: npm ci
 
-      # A project site (github.com/<user>/<repo>) is served from /<repo>/; a user site (<user>.github.io) from /.
-      - name: Work out the base path
-        run: |
-          repo="${GITHUB_REPOSITORY#*/}"
-          if [[ "$repo" == *.github.io ]]; then
-            echo "BASE_PATH=/" >> "$GITHUB_ENV"
-          else
-            echo "BASE_PATH=/$repo/" >> "$GITHUB_ENV"
-          fi
+      # The site is served from its own domain (www.saumya.cc), i.e. from the root, so assets are built for "/".
+      # (GitHub redirects saumya13.github.io/portfolio/ to the custom domain.) If the custom domain is ever removed,
+      # a project site is served from /<repo>/ and this has to become "/portfolio/" again.
+      - name: Set the base path
+        run: echo "BASE_PATH=/" >> "$GITHUB_ENV"
 
       - name: Build
         run: npm run build
