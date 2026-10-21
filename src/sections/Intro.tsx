@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from 'motion/react'
 import { Fragment, useEffect, useRef, useState } from 'react'
-import { ComplexSimple, DWELL } from '../components/ComplexSimple'
+import { ComplexSimple } from '../components/ComplexSimple'
 import { IconRow } from '../components/IconRow'
 import { intro } from '../content/site'
 
@@ -10,6 +10,7 @@ import { intro } from '../content/site'
 // at all and the line is simply shown finished.
 const PIN_EXTRA = 80
 const ease = [0.22, 1, 0.36, 1] as const
+// Background colours for the highlighted words (chips), matching the hero.
 const chipClass = { lime: 'bg-lime', sky: 'bg-sky', pink: 'bg-pink', yellow: 'bg-yellow' } as const
 
 function usePinned() {
@@ -26,28 +27,40 @@ function usePinned() {
 
 type Seg = (typeof intro.segments)[number]
 
-// The text on this page is set in Inter, chips included (the chip is carried by its colour, not by a second typeface).
+// In the supporting sentence the key words are set heavier and darker than the rest (the commas and "and" stay in the soft grey).
+const strong = 'font-semibold text-[#1a1d29] dark:text-[#f2f2f1]'
+const emphasise = (text: string) =>
+  text.split(/(clean|intuitive|easy to use)/).map((part, k) =>
+    k % 2 ? (
+      <span key={k} className={strong}>
+        {part}
+      </span>
+    ) : (
+      part
+    ),
+  )
+
+// All the text on this page is Inter: the big lead sentence and the supporting sentence. Marked words sit on coloured chips.
 // Section headings (the bracketed labels, like "(What I do)") keep the site-wide label style, which is Bonny.
-function Segments({ segments }: { segments: Seg[] }) {
+function Segments({ segments, room = false, face = 'font-inter font-normal' }: { segments: Seg[]; room?: boolean; face?: string }) {
   return (
     <>
       {segments.map((seg, i) => {
-        const face = 'font-inter font-normal'
         const br = seg.breakAfter && i < segments.length - 1
         // chips are tilted a little, alternately left and right, like the highlighted words in the About heading
         const tilt = segments.slice(0, i).filter((s) => s.chip).length % 2 ? 'rotate-[1.2deg]' : '-rotate-[1.2deg]'
         const el = seg.chip ? (
-          <span key={i} data-path-chip={seg.anchor ? '' : undefined} className={`inline-block whitespace-nowrap rounded-[0.22em] px-[0.3em] pb-[0.12em] text-[#111] ${tilt} ${face} ${chipClass[seg.chip]}`}>
+          <span key={i} data-path-chip={seg.anchor ? '' : undefined} className={`inline-block whitespace-nowrap rounded-[0.22em] px-[0.3em] pb-[0.12em] italic text-[#111] ${tilt} ${face} ${chipClass[seg.chip]}`}>
             {seg.text}
           </span>
         ) : seg.mark === 'simple' ? (
-          <span key={i} data-mark="simple" className={`${face} text-ink`}>
+          <span key={i} data-mark="simple" className={face}>
             {/* room for the tangle just before "clean,"; kept on the same line as that word */}
             <span className="whitespace-nowrap">
-              <span data-tangle aria-hidden className="inline-block w-[2.3em]" />
-              {seg.text.split(' ')[0]}
+              <span data-tangle aria-hidden className={`inline-block ${room ? 'w-[2.3em]' : 'w-0'}`} />
+              {emphasise(seg.text.split(' ')[0])}
             </span>
-            {seg.text.slice(seg.text.split(' ')[0].length)}
+            {emphasise(seg.text.slice(seg.text.split(' ')[0].length))}
           </span>
         ) : seg.mark ? (
           <span key={i} data-mark={seg.mark} className={face}>
@@ -69,18 +82,23 @@ function Segments({ segments }: { segments: Seg[] }) {
   )
 }
 
-// A small "keep scrolling" cue. The page is pinned and nothing moves while it rests, so a hint fades in after a moment and
-// is gone again by the time the tangle starts to unwind.
+// A small "keep scrolling" cue. The page is pinned and the text doesn't move, so the hint fades in after a moment and stays
+// for the whole pinned stretch; it fades out only as the pin lets go and the page starts to scroll on.
 function ScrollHint({ pin }: { pin: React.RefObject<HTMLElement | null> }) {
   const { scrollYProgress } = useScroll({ target: pin, offset: ['start start', 'end end'] })
-  const fade = useTransform(scrollYProgress, [0, DWELL * 0.85], [1, 0], { clamp: true })
+  const fade = useTransform(scrollYProgress, [0.88, 1], [1, 0], { clamp: true })
   return (
     <motion.div aria-hidden style={{ opacity: fade }} className="pointer-events-none absolute inset-x-0 bottom-8 flex justify-center">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.8, duration: 0.8 }} className="flex flex-col items-center gap-1.5 text-ink/60">
-        <span className="label">Keep scrolling</span>
-        <motion.svg viewBox="0 0 24 24" className="size-4 fill-none stroke-current" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" animate={{ y: [0, 5, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}>
-          <path d="m6 9 6 6 6-6" />
-        </motion.svg>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.8, duration: 0.8 }} className="flex flex-col items-center gap-3 text-ink/60">
+        <span className="label tracking-[0.3em]">Keep scrolling</span>
+        {/* a thin line that draws itself downwards and slips away, over and over */}
+        <div className="relative h-12 w-px overflow-hidden bg-ink/15">
+          <motion.div
+            className="absolute inset-0 origin-top bg-ink/70"
+            animate={{ scaleY: [0, 1, 1], y: ['0%', '0%', '100%'] }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut', times: [0, 0.5, 1] }}
+          />
+        </div>
       </motion.div>
     </motion.div>
   )
@@ -107,7 +125,7 @@ export function Intro() {
       <div ref={pinRef} data-pin className="relative" style={pinned ? { height: `${100 + PIN_EXTRA}svh` } : undefined}>
         <div
           ref={stickyRef}
-          className={`mx-auto flex w-full max-w-5xl flex-col items-center justify-center px-6 pb-20 pt-20 text-center ${pinned ? 'sticky top-0 h-[100svh]' : 'min-h-[100svh]'}`}
+          className={`mx-auto flex w-full max-w-5xl flex-col items-center justify-center px-6 pb-20 pt-20 text-center ${pinned ? 'sticky top-0 h-[100svh]' : 'relative min-h-[100svh]'}`}
         >
           <motion.p
             initial={{ opacity: 0 }}
@@ -123,9 +141,9 @@ export function Intro() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-20%' }}
             transition={{ duration: 1.1, ease }}
-            className="text-balance [font-synthesis:none] text-[clamp(1.5rem,2.9vw,2.6rem)] leading-[1.35] tracking-[-0.035em]"
+            className="text-balance [font-synthesis:none] text-[clamp(1.75rem,3.4vw,3.1rem)] leading-[1.3] tracking-[-0.035em] max-md:text-balance"
           >
-            <Segments segments={lead} />
+            <Segments segments={lead} face="font-inter font-normal" />
           </motion.p>
           <motion.p
             ref={textRef}
@@ -133,9 +151,9 @@ export function Intro() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-20%' }}
             transition={{ duration: 1, ease, delay: 0.2 }}
-            className="mt-14 max-w-[36rem] text-[clamp(1.05rem,1.65vw,1.5rem)] leading-[1.55] tracking-[-0.025em] text-ink/70 [font-synthesis:none]"
+            className="mt-14 max-w-[36rem] text-[clamp(1.05rem,1.65vw,1.5rem)] leading-[1.55] tracking-[-0.025em] text-[#6b7080] dark:text-[#a3a8b8] max-md:text-balance [font-synthesis:none]"
           >
-            <Segments segments={support} />
+            <Segments segments={support} room={pinned} />
           </motion.p>
           <ComplexSimple section={stickyRef} text={textRef} pin={pinRef} animated={pinned} />
           {pinned && <ScrollHint pin={pinRef} />}

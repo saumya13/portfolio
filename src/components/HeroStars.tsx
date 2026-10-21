@@ -1,4 +1,5 @@
 import { motion, useSpring, useTransform, type MotionValue } from 'motion/react'
+import { useEffect, useState } from 'react'
 
 type Colour = 'pink' | 'yellow' | 'sky'
 
@@ -17,7 +18,7 @@ const FLOWERS: { x: number; y: number; size: number; colour: Colour; turn: numbe
   { x: 66, y: 14, size: 28, colour: 'yellow', turn: 20 },
   { x: 83, y: 18, size: 44, colour: 'sky', turn: 8 },
   { x: 94, y: 39, size: 32, colour: 'pink', turn: 33 },
-  { x: 14, y: 53, size: 38, colour: 'yellow', turn: 25 },
+  { x: 5, y: 56, size: 38, colour: 'yellow', turn: 25 },
   { x: 4, y: 77, size: 30, colour: 'sky', turn: 5 },
   { x: 27, y: 82, size: 46, colour: 'yellow', turn: 18 },
   { x: 38, y: 89, size: 28, colour: 'pink', turn: 45 },
@@ -26,6 +27,23 @@ const FLOWERS: { x: number; y: number; size: number; colour: Colour; turn: numbe
   { x: 91, y: 66, size: 44, colour: 'yellow', turn: 10 },
 ]
 
+// On a phone there is little room around the headline, so only the stars in the clear bands above and below it are
+// kept (these are indexes into FLOWERS), and they are drawn a little smaller.
+const PHONE_STARS = [0, 1, 3, 6, 8, 10]
+const PHONE_SCALE = 0.8
+const usePhone = () => {
+  const q = '(max-width: 767px)'
+  const [phone, setPhone] = useState(() => typeof window !== 'undefined' && matchMedia(q).matches)
+  useEffect(() => {
+    const m = matchMedia(q)
+    const on = () => setPhone(m.matches)
+    m.addEventListener('change', on)
+    return () => m.removeEventListener('change', on)
+  }, [])
+  return phone
+}
+
+const EDGE = 14 // the least gap between a star and the edge of the screen, in px
 const NAV = 72 // height of the fixed nav bar, in px: flowers are never pushed up under it
 const RADIUS = 150 // how close the pointer must be to push a flower, in px
 const PUSH = 0.25 // how far a flower is pushed, as a share of how deep into the radius the pointer is
@@ -50,12 +68,17 @@ function Star({
 }) {
   const { x: px, y: py, size, colour, turn } = spec
   const c = PALETTE[colour]
+  // How far a star reaches from its centre (its tips, a little enlarged while it twinkles).
+  const reach = size * 0.55
+  // Where it rests: its percentage position, nudged in so the whole star always stays inside the margins.
+  const homeX = (width: number) => Math.min(Math.max((px / 100) * width, reach + EDGE), Math.max(width - reach - EDGE, reach + EDGE))
+  const homeY = (height: number) => Math.min(Math.max((py / 100) * height, NAV + reach), Math.max(height - reach - EDGE, NAV + reach))
 
   // Push away from the pointer along the line between them; zero once the pointer is out of range, and the spring
   // brings the flower home.
   const push = (axis: 0 | 1) => (): number => {
-    const cx = (px / 100) * w.get()
-    const cy = (py / 100) * h.get()
+    const cx = homeX(w.get())
+    const cy = homeY(h.get())
     const dx = cx - mx.get()
     const dy = cy - my.get()
     const d = Math.hypot(dx, dy)
@@ -63,8 +86,7 @@ function Star({
     const amount = (RADIUS - d) * PUSH
     const move = ((axis === 0 ? dx : dy) / d) * amount
     // Keep the flower fully on screen and clear of the nav bar, wherever it is pushed.
-    const half = size / 2 + 8
-    const [lo, hi] = axis === 0 ? [half, w.get() - half] : [NAV + half, h.get() - half]
+    const [lo, hi] = axis === 0 ? [reach + EDGE, w.get() - reach - EDGE] : [NAV + reach, h.get() - reach - EDGE]
     const home = axis === 0 ? cx : cy
     return Math.min(Math.max(home + move, Math.min(lo, home)), Math.max(hi, home)) - home
   }
@@ -72,7 +94,7 @@ function Star({
   const y = useSpring(useTransform([mx, my, w, h], push(1)), { stiffness: 25, damping: 14, mass: 1 })
 
   return (
-    <div aria-hidden className="pointer-events-none absolute" style={{ left: `${px}%`, top: `${py}%` }}>
+    <div aria-hidden className="pointer-events-none absolute" style={{ left: `clamp(${reach + EDGE}px, ${px}%, calc(100% - ${reach + EDGE}px))`, top: `clamp(${NAV + reach}px, ${py}%, calc(100% - ${reach + EDGE}px))` }}>
       <motion.div style={{ x, y }}>
         <motion.svg
           viewBox="-70 -70 140 140"
@@ -100,9 +122,11 @@ function Star({
 
 // Small sparkling stars scattered around the headline. They twinkle, shy away from the pointer and drift back when it leaves.
 export function HeroStars({ mx, my, w, h }: { mx: MotionValue<number>; my: MotionValue<number>; w: MotionValue<number>; h: MotionValue<number> }) {
+  const phone = usePhone()
+  const list = phone ? PHONE_STARS.map((i) => ({ ...FLOWERS[i], size: Math.round(FLOWERS[i].size * PHONE_SCALE) })) : FLOWERS
   return (
     <>
-      {FLOWERS.map((f, i) => (
+      {list.map((f, i) => (
         <Star key={i} spec={f} index={i} mx={mx} my={my} w={w} h={h} />
       ))}
     </>

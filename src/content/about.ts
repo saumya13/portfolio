@@ -12,7 +12,6 @@ export const aboutIntro = {
   facts: [
     { k: "Based in", v: "Amsterdam" },
     { k: "Focus", v: "Product Engineering" },
-    { k: "Currently", v: "Building products using AI" },
   ],
 };
 

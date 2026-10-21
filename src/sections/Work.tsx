@@ -57,14 +57,14 @@ function Tile({ project, index }: { project: Project; index: number }) {
         {...(link ? { to: `/work/${project.slug}`, 'aria-label': `View case study: ${title}` } : {})}
         className={`group block h-full ${link ? '[@media(hover:hover)]:cursor-none' : ''}`}
       >
-        <div className="h-full rounded-[1.75rem] bg-ink/[0.04] p-2 pb-6 md:p-2.5 md:pb-7">
+        <div className="h-full rounded-[1.75rem] bg-ink/[0.04] p-2 pb-4 md:p-2.5 md:pb-5">
           <div
             className={`relative overflow-hidden rounded-[1.4rem] border border-ink/15`}
             style={{ backgroundColor: tint }}
             onMouseEnter={() => zoom(true)}
             onMouseLeave={() => zoom(false)}
           >
-            <div className="p-4 md:p-6">
+            <div className="p-3 md:p-4">
               {/* The framed shot zooms in on hover; the box clips it. */}
               <div ref={shotRef} className="relative w-full overflow-hidden rounded-xl shadow-[0_24px_60px_-20px_rgba(0,0,0,0.35)] transition-transform duration-700 ease-out">
                 {video && image ? (
@@ -93,7 +93,7 @@ function Tile({ project, index }: { project: Project; index: number }) {
             </div>
           </div>
 
-        <div className="relative mt-5 flex items-start justify-between gap-6 pl-7 pr-4">
+        <div className="relative mt-4 flex items-start justify-between gap-6 pl-7 pr-4">
           <span
             aria-hidden
             className="absolute left-2 top-1.5 size-3 scale-0 rounded-full bg-[#e8532f] transition-transform duration-300 group-hover:scale-100"
@@ -128,7 +128,7 @@ export function Work() {
     <section
       ref={ref}
       id="work"
-      className="relative z-20 overflow-x-clip px-[calc(var(--gutter)+1.25rem)] pb-32 md:pb-48"
+      className="relative z-20 overflow-x-clip px-[calc(var(--gutter)+1.25rem)] pb-16 md:pb-24"
       onPointerMove={(e) => {
         x.set(e.clientX)
         y.set(e.clientY)
@@ -136,14 +136,14 @@ export function Work() {
       }}
       onPointerLeave={() => setOver(false)}
     >
-      <ScissorLine className="mt-16 md:mt-28" />
+      <ScissorLine className="mt-8 md:mt-14" />
 
-      <motion.div style={{ opacity: headOpacity }} className="relative mx-auto mt-10 max-w-2xl text-center md:mt-14">
+      <motion.div style={{ opacity: headOpacity }} className="relative mx-auto mt-6 max-w-2xl text-center md:mt-8">
         <p className="eyebrow text-ink/60">({work.label})</p>
         <h2 className="mt-4 font-bonny text-5xl font-medium leading-none tracking-tight md:text-7xl">{work.heading}</h2>
       </motion.div>
 
-      <div className="relative mx-auto mt-14 grid max-w-6xl grid-cols-1 gap-x-10 gap-y-16 md:mt-20 md:grid-cols-2 md:gap-x-14 md:gap-y-24">
+      <div className="relative mx-auto mt-8 grid max-w-6xl grid-cols-1 gap-x-6 gap-y-8 md:mt-12 md:grid-cols-2 md:gap-x-8 md:gap-y-10">
         {projects.map((p, i) => (
           <Tile key={`${p.slug}-${i}`} project={p} index={i} />
         ))}

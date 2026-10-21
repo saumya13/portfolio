@@ -22,7 +22,17 @@ const ICONS: Record<string, ReactNode> = {
       <path d="M9 18c-4.51 2-5-2-7-2" />
     </>
   ),
+  Email: (
+    <>
+      <rect x="2.5" y="4.5" width="19" height="15" rx="3.5" />
+      <path d="m21 7-8.1 5.2a1.8 1.8 0 0 1-1.8 0L3 7" />
+    </>
+  ),
 }
+
+// The look shared by the round-cornered icon chips: a thin outline, a hard offset shadow, and a press-in on click.
+const CHIP =
+  'grid size-12 place-items-center rounded-2xl border-[1.5px] border-[#111] bg-white/50 text-[#111] shadow-[3px_3px_0_#111] transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-[#111] hover:text-[#fbdcec] hover:shadow-[5px_5px_0_#111] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none'
 
 // A sticky reveal footer: it stays fixed underneath the page, and as the last section scrolls away it
 // fades and scales into view. The wrapper takes up the footer's space in the page and clips the fixed
@@ -54,10 +64,10 @@ export function Footer() {
   const toTop = () => (lenis ? lenis.scrollTo(0, { duration: 1.6 }) : window.scrollTo({ top: 0, behavior: 'smooth' }))
 
   return (
-    <footer ref={wrap} id="contact" className="relative z-30 h-[46svh]" style={{ clipPath: 'inset(-80px 0 0 0)' }}>
+    <footer ref={wrap} id="contact" className="relative z-30 h-[max(46svh,21rem)] max-[370px]:h-[max(46svh,24rem)]" style={{ clipPath: 'inset(-80px 0 0 0)' }}>
       <motion.div
         style={{ opacity, y, backgroundColor: LIGHT_PINK }}
-        className="fixed bottom-0 left-0 h-[46svh] w-full text-[#111]"
+        className="fixed bottom-0 left-0 h-[max(46svh,21rem)] max-[370px]:h-[max(46svh,24rem)] w-full text-[#111]"
       >
         {/* A soft wave along the top edge, so the footer rises out of the page with a curvy boundary. */}
         <svg aria-hidden viewBox="0 0 1440 80" preserveAspectRatio="none" className="absolute inset-x-0 bottom-[calc(100%-1px)] block h-12 w-full md:h-20" style={{ fill: LIGHT_PINK }}>
@@ -65,7 +75,7 @@ export function Footer() {
         </svg>
         <motion.div
           style={{ filter }}
-          className="flex h-full flex-col justify-between px-6 pb-5 pt-8 md:px-[calc(var(--gutter)+2.5rem)]"
+          className="flex h-full flex-col justify-between gap-6 px-6 pb-5 pt-8 md:px-[calc(var(--gutter)+2.5rem)]"
         >
         <div>
           <div>
@@ -75,42 +85,36 @@ export function Footer() {
               <span className="italic">.</span>
             </h2>
             <p className="mt-3 max-w-[52ch] text-sm leading-snug text-[#111]/75">{footer.blurb}</p>
-            <button
-              type="button"
-              onClick={copyEmail}
-              aria-live="polite"
-              className="mt-3 inline-flex items-center gap-2 rounded-full border-[1.5px] border-[#111] bg-white/50 px-4 py-1.5 text-sm font-medium transition-colors duration-200 hover:bg-[#111] hover:text-[#fbdcec]"
-            >
-              <svg viewBox="0 0 24 24" aria-hidden className="size-4 fill-none stroke-current" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-                {copied ? <path d="m5 12.5 4.5 4.5L19 7.5" /> : <><rect x="9" y="9" width="11" height="11" rx="2.5" /><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15" /></>}
-              </svg>
-              {copied ? 'Email copied' : 'Copy my email'}
-            </button>
-            <ul className="mt-4 flex items-center gap-3">
+            {/* One row: the profiles and the email as icon chips, then About. The email chip copies the address. */}
+            <div className="mt-5 flex flex-wrap items-center gap-3">
               {socials.map((s) => (
-                <li key={s.label}>
-                  <a
-                    href={s.href}
-                    aria-label={s.label}
-                    target={s.href.startsWith('mailto:') ? undefined : '_blank'}
-                    rel="noreferrer"
-                    className="grid size-12 place-items-center rounded-2xl border-[1.5px] border-[#111] bg-white/50 text-[#111] shadow-[3px_3px_0_#111] transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-[#111] hover:text-[#fbdcec] hover:shadow-[5px_5px_0_#111] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
-                  >
-                    <svg viewBox="0 0 24 24" aria-hidden className="size-6 fill-none stroke-current" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
-                      {ICONS[s.label]}
-                    </svg>
-                  </a>
-                </li>
+                <a key={s.label} href={s.href} aria-label={s.label} title={s.label} target="_blank" rel="noreferrer" className={CHIP}>
+                  <svg viewBox="0 0 24 24" aria-hidden className="size-6 fill-none stroke-current" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                    {ICONS[s.label]}
+                  </svg>
+                </a>
               ))}
-              <li className="ml-2">
-                <Link
-                  to="/about"
-                  className="flex h-12 items-center gap-2 rounded-2xl border-[1.5px] border-[#111] bg-[#111] px-5 text-sm font-medium text-[#fbdcec] shadow-[3px_3px_0_#111] transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-white/50 hover:text-[#111] hover:shadow-[5px_5px_0_#111] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+              <div className="relative">
+                <button type="button" onClick={copyEmail} aria-label="Copy my email" title="Copy my email" className={CHIP}>
+                  <svg viewBox="0 0 24 24" aria-hidden className="size-6 fill-none stroke-current" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                    {copied ? <path d="m5 12.5 4.5 4.5L19 7.5" /> : ICONS.Email}
+                  </svg>
+                </button>
+                {/* a small bubble confirms the copy (also announced to screen readers) */}
+                <span
+                  role="status"
+                  className={`pointer-events-none absolute left-1/2 top-full mt-3 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#111] px-3 py-1 text-xs font-medium text-[#fbdcec] transition-all duration-200 ${copied ? 'translate-y-0 opacity-100' : '-translate-y-1 opacity-0'}`}
                 >
-                  About me <span aria-hidden>→</span>
-                </Link>
-              </li>
-            </ul>
+                  {copied ? 'Email copied' : ''}
+                </span>
+              </div>
+              <Link
+                to="/about"
+                className="group flex h-12 items-center gap-2 rounded-2xl border-[1.5px] border-[#111] bg-[#111] px-5 text-sm font-medium text-[#fbdcec] shadow-[3px_3px_0_#111] sm:ml-2 transition-all duration-200 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:bg-white/50 hover:text-[#111] hover:shadow-[5px_5px_0_#111] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+              >
+                About me <span aria-hidden>→</span>
+              </Link>
+            </div>
           </div>
         </div>
 

@@ -64,7 +64,7 @@ export function IconRow({ sectionProgress }: { sectionProgress: MotionValue<numb
   return (
     <ul
       aria-label="My Builder Stack"
-      className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-4 px-6 pb-9 pt-10 md:flex-nowrap md:gap-4"
+      className="mx-auto flex max-w-5xl flex-wrap items-center justify-center gap-x-4 gap-y-12 px-6 pb-12 pt-10 md:flex-nowrap md:gap-4 md:pb-9"
       style={{ perspective: 500 }}
     >
       {stack.map((item, i) => (

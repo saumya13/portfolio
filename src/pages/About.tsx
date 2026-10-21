@@ -89,12 +89,12 @@ function Intro() {
         </div>
         <motion.dl
           {...fade}
-          className="mt-6 grid gap-3 border-t border-line pt-4 sm:grid-cols-3"
+          className="mt-8 grid gap-6 border-t border-line pt-6 sm:grid-cols-3"
         >
           {aboutIntro.facts.map((f) => (
             <div key={f.k}>
               <dt className="label text-muted">{f.k}</dt>
-              <dd className="mt-1 text-xs">{f.v}</dd>
+              <dd className="mt-2.5 text-xs">{f.v}</dd>
             </div>
           ))}
         </motion.dl>
@@ -313,37 +313,30 @@ function Into() {
         className={`-mx-[calc(var(--gutter)+1.25rem)] mt-14 border-t border-line pt-14 ${px}`}
       >
         <Heading lines={values.heading} />
-        <div className="mt-10 grid gap-4 md:mt-14 md:grid-cols-2 md:gap-5">
+        <div className="mt-10 grid gap-4 md:mt-14 md:auto-rows-fr md:grid-cols-2 md:gap-5">
           {values.items.map((v, i) => (
             <motion.article
               key={v.title}
               {...fade}
               transition={{ ...fade.transition, delay: (i % 2) * 0.1 }}
-              className={`group relative flex min-h-[15rem] flex-col justify-between overflow-hidden rounded-[2rem] border border-black/15 p-7 text-[#111] dark:border-white/10 transition-transform duration-500 ease-out hover:-translate-y-1 md:min-h-[17rem] md:p-9 ${VALUE_TINTS[i % VALUE_TINTS.length]}`}
+              className={`group relative flex flex-col overflow-hidden rounded-[2rem] border border-black/15 p-6 text-[#111] dark:border-white/10 transition-transform duration-500 ease-out hover:-translate-y-1 md:p-8 ${VALUE_TINTS[i % VALUE_TINTS.length]}`}
             >
-              <div className="flex items-start justify-between">
-                <span className="font-display text-xl italic text-[#111]/55">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <svg
-                  viewBox="0 0 64 64"
-                  aria-hidden
-                  className="size-14 fill-none stroke-[#111]/70 transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110 md:size-16"
-                  strokeWidth={1.6}
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  {VALUE_DOODLES[i % VALUE_DOODLES.length]}
-                </svg>
-              </div>
-              <div className="mt-10">
-                <h3 className="font-bonny text-3xl font-medium leading-[1.05] tracking-tight md:text-4xl">
-                  {v.title}
-                </h3>
-                <p className="mt-3 max-w-md text-base leading-relaxed text-[#111]/70">
-                  {v.body}
-                </p>
-              </div>
+              {/* The number sits right above the title, and the doodle floats in the corner, so there is no empty band at the top. */}
+              <span className="font-display text-xl italic leading-none text-[#111]/55">{String(i + 1).padStart(2, "0")}</span>
+              <svg
+                viewBox="0 0 64 64"
+                aria-hidden
+                className="absolute right-6 top-6 size-12 fill-none stroke-[#111]/70 transition-transform duration-500 group-hover:rotate-6 group-hover:scale-110 md:right-8 md:top-8 md:size-14"
+                strokeWidth={1.6}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                {VALUE_DOODLES[i % VALUE_DOODLES.length]}
+              </svg>
+              <h3 className="mt-3 pr-16 font-bonny text-3xl font-medium leading-[1.05] tracking-tight md:pr-20 md:text-4xl">
+                {v.title}
+              </h3>
+              <p className="mt-3 max-w-md text-base leading-relaxed text-[#111]/70">{v.body}</p>
             </motion.article>
           ))}
         </div>

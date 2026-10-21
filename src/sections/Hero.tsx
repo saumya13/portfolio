@@ -98,7 +98,7 @@ export function Hero() {
       <motion.div style={{ scale, opacity }} className="relative flex h-full flex-col items-center justify-center px-6">
         <motion.h1 initial="hidden" animate="show" className="text-center font-bonny [font-synthesis:none] text-[clamp(2rem,4vw,4.25rem)] leading-[1.38] tracking-[-0.02em]">
           {site.hero.lines.map((line, i) => (
-            <span key={i} className={`flex flex-wrap items-center justify-center gap-x-[0.28em] py-[0.04em]`}>
+            <span key={i} className={`flex flex-wrap items-center justify-center gap-x-[0.28em] py-[0.04em] ${i >= 1 ? 'min-[400px]:text-[1.1em]' : ''}`}>
               {line.map((seg, j) => {
                 const words = seg.text.split(' ').filter(Boolean)
                 const first = count
@@ -118,7 +118,7 @@ export function Hero() {
                     {inner}
                   </motion.span>
                 ) : (
-                  <span key={j} data-flower-anchor={seg.anchor ? '' : undefined} className={`inline-flex gap-x-[0.28em] ${seg.anchor ? 'font-medium' : ''}`}>
+                  <span key={j} data-flower-anchor={seg.anchor ? '' : undefined} className={`inline-flex gap-x-[0.28em] ${seg.anchor ? 'font-medium' : ''} ${seg.sans ? 'font-inter text-[0.9em] font-light tracking-[-0.03em]' : ''}`}>
                     {inner}
                   </span>
                 )

@@ -6,6 +6,8 @@ export type Segment = {
   wave?: boolean;
   // Marks the words the "complex becomes simple" scroll animation is drawn around.
   mark?: "complex" | "simple";
+  // Set this (non-chip) text in Inter instead of the hero's default face.
+  sans?: boolean;
   // Start a new line after this segment.
   breakAfter?: boolean;
   italic?: string;
@@ -51,8 +53,10 @@ const introSegments: Segment[] = [
   { text: "A " },
   // `anchor` marks where the scroll route arrives from the hero.
   { text: "full-stack developer", chip: "sky", anchor: true },
+  { text: " with " },
+  { text: "6\u00A0years", chip: "lime" },
   {
-    text: " with 6\u00A0years of experience, a\u00A0keen eye for detail and a\u00A0passion for ",
+    text: " of experience, a\u00A0keen eye for detail and a\u00A0passion for ",
   },
   { text: "design", chip: "yellow", italicWord: "design" },
   { text: ".", breakAfter: true },
