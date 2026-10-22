@@ -41,8 +41,8 @@ const emphasise = (text: string) =>
   )
 
 // All the text on this page is Inter: the big lead sentence and the supporting sentence. Marked words sit on coloured chips.
-// Section headings (the bracketed labels, like "(What I do)") keep the site-wide label style, which is Bonny.
-function Segments({ segments, room = false, face = 'font-inter font-normal' }: { segments: Seg[]; room?: boolean; face?: string }) {
+// Section headings (the bracketed labels, like "(What I do)") keep the site-wide label style.
+function Segments({ segments, room = false, face = 'font-manrope font-normal' }: { segments: Seg[]; room?: boolean; face?: string }) {
   return (
     <>
       {segments.map((seg, i) => {
@@ -132,7 +132,7 @@ export function Intro() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, margin: '-20%' }}
             transition={{ duration: 0.8 }}
-            className="eyebrow mb-12 text-ink"
+            className="eyebrow mb-12 text-ink/60"
           >
             ({intro.label})
           </motion.p>
@@ -143,7 +143,7 @@ export function Intro() {
             transition={{ duration: 1.1, ease }}
             className="text-balance [font-synthesis:none] text-[clamp(1.75rem,3.4vw,3.1rem)] leading-[1.3] tracking-[-0.035em] max-md:text-balance"
           >
-            <Segments segments={lead} face="font-inter font-normal" />
+            <Segments segments={lead} face="font-manrope font-normal" />
           </motion.p>
           <motion.p
             ref={textRef}
@@ -160,7 +160,7 @@ export function Intro() {
         </div>
       </div>
       <div ref={stackRef} className="relative mt-12 flex flex-col items-center gap-10 pb-10 md:mt-16">
-        <p className="eyebrow text-ink">(My Builder Stack)</p>
+        <p className="eyebrow text-ink/60">(My Builder Stack)</p>
         <IconRow sectionProgress={stackProgress} />
       </div>
     </section>

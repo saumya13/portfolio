@@ -1,3 +1,4 @@
+import { ScriptText } from './ScriptText'
 import { motion, useMotionValueEvent, useScroll, useTransform } from 'motion/react'
 import { useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
@@ -80,8 +81,8 @@ export function Footer() {
         <div>
           <div>
             <p className="eyebrow mb-2 text-[#111]/70">(Contact)</p>
-            <h2 className="font-bonny text-[clamp(2.25rem,5.5vw,4.75rem)] font-medium leading-[0.9] tracking-[-0.02em]">
-              {footer.heading.replace('.', '')}
+            <h2 className="font-arima text-[clamp(2.25rem,5.5vw,4.75rem)] font-medium leading-[0.9] tracking-[-0.02em]">
+              <ScriptText text={footer.heading.replace('.', '')} swap={{ Talk: 'T' }} />
               <span className="italic">.</span>
             </h2>
             <p className="mt-3 max-w-[52ch] text-sm leading-snug text-[#111]/75">{footer.blurb}</p>

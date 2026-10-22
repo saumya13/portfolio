@@ -22,14 +22,17 @@ export type Photo = {
   position?: string;
   zoom?: number;
   origin?: string;
+  // Show the whole photo (letterboxed over a blurred copy of itself) instead of cropping it to fill the frame.
+  fit?: "contain";
 };
 // The photos in the intro carousel (files live in /public/photos). Add a caption to show a line under a photo.
-const carouselPhotos = [17, 7, 8, 18];
+const carouselPhotos = [17, 33, 34, 8];
 // How each photo is framed (the default is a centred crop): `position` is the CSS object-position of the crop,
 // `zoom` scales it up around `origin` (a point in the frame that stays put).
-const framing: Record<number, Pick<Photo, "position" | "zoom" | "origin">> = {
+const framing: Record<number, Pick<Photo, "position" | "zoom" | "origin" | "fit">> = {
   17: { position: "50% 22%" },
-  7: { position: "50% 75%" },
+  33: { position: "50% 70%" },
+  34: { position: "50% 24%" },
   8: { position: "50% 90%" },
   18: { position: "50% 65%" },
 };

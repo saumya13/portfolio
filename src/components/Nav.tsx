@@ -1,8 +1,8 @@
 import { motion, useMotionValueEvent, useScroll } from 'motion/react'
-import { useRef, useState, type MouseEvent } from 'react'
+import { useState, type MouseEvent } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { site } from '../content/site'
-import { NavGlass } from './NavGlass'
+import { CatAvatar } from './CatAvatar'
 import { useLenis } from './SmoothScroll'
 import { useTheme } from './theme'
 
@@ -13,19 +13,7 @@ export function Nav() {
   const { theme, toggle } = useTheme()
   const { scrollY } = useScroll()
   const [hidden, setHidden] = useState(false)
-  // Hovering the name opens the glass panel under it; it closes shortly after the pointer leaves.
-  const [glass, setGlass] = useState(false)
-  const nameRef = useRef<HTMLAnchorElement>(null)
-  const closeTimer = useRef<number>(0)
-  const openGlass = () => {
-    clearTimeout(closeTimer.current)
-    setGlass(true)
-  }
-  const closeGlass = () => {
-    clearTimeout(closeTimer.current)
-    closeTimer.current = window.setTimeout(() => setGlass(false), 150)
-  }
-
+  const [pet, setPet] = useState(0)
   useMotionValueEvent(scrollY, 'change', (y) => {
     const prev = scrollY.getPrevious() ?? 0
     setHidden(y > prev && y > 120)
@@ -53,18 +41,20 @@ export function Nav() {
     <motion.header
       animate={{ y: hidden ? '-100%' : 0 }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed inset-x-0 top-0 z-50 font-bonny font-medium [font-synthesis:none] flex items-center justify-between border-b border-line bg-paper/80 py-4 backdrop-blur-md px-[calc(var(--gutter)+1.25rem)]"
+      className="fixed inset-x-0 top-0 z-50 flex items-center justify-between border-b border-line bg-paper/80 py-2.5 backdrop-blur-md px-[calc(var(--gutter)+1.25rem)]"
     >
-      <div className="relative" onPointerEnter={openGlass} onPointerLeave={closeGlass}>
+      <div className="flex items-center gap-3">
+        <CatAvatar size={36} theme="rose" pet={pet} />
         <a
-          ref={nameRef}
           href="#top"
-          onClick={toTop}
-          className="block font-bonny text-lg leading-none md:text-xl"
+          onClick={(e) => {
+            setPet((n) => n + 1) // the cat is happy when its name is clicked too
+            toTop(e)
+          }}
+          className="block font-ingrid text-3xl font-normal leading-none md:text-4xl"
         >
           {site.name}
         </a>
-        <NavGlass open={glass} name={site.name} target={nameRef} onClick={toTop} />
       </div>
       <nav className="flex items-center gap-5 md:gap-8">
         {site.nav.map((item) =>
@@ -73,7 +63,7 @@ export function Nav() {
               key={item.href}
               href={item.href}
               onClick={(e) => go(e, item.href)}
-              className="label !text-[1rem] leading-none rounded-lg bg-pink px-4 py-2 text-[#111] transition-transform duration-200 hover:-translate-y-0.5"
+              className="label !text-[0.95rem] leading-none rounded-lg bg-pink px-4 py-2 text-[#111] transition-transform duration-200 hover:-translate-y-0.5"
             >
               {item.label}
             </a>
@@ -82,7 +72,7 @@ export function Nav() {
               key={item.href}
               href={item.href}
               onClick={(e) => go(e, item.href)}
-              className="label hidden !text-[1rem] leading-none text-ink transition-opacity hover:opacity-50 sm:inline"
+              className="label hidden !text-[0.95rem] leading-none text-ink transition-opacity hover:opacity-50 sm:inline"
             >
               ({item.label})
             </a>

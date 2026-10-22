@@ -49,7 +49,7 @@ function Tile({ item, index, count, progress }: { item: StackItem; index: number
         <Glyph item={item} />
       </div>
       </div>
-      <span style={{ fontFamily: 'var(--font-inter)', fontWeight: 500 }} className="label pointer-events-none absolute left-1/2 top-full mt-2 w-[5.25rem] -translate-x-1/2 text-center !text-[0.7rem] leading-tight text-ink/70 transition-colors group-hover:text-ink">
+      <span style={{ fontFamily: 'var(--font-manrope)', fontWeight: 500 }} className="label pointer-events-none absolute left-1/2 top-full mt-2 w-[5.25rem] -translate-x-1/2 text-center !text-[0.7rem] leading-tight text-ink/70 transition-colors group-hover:text-ink">
         {item.name}
       </span>
     </motion.li>

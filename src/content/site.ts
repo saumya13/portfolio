@@ -12,26 +12,26 @@ export type Segment = {
   breakAfter?: boolean;
   italic?: string;
   italicWord?: string;
-  // Set the segment in the display face (Bonny).
-  bonny?: boolean;
   big?: boolean;
+  // Letters of this segment to set in the script face (Ingrid Darling); case matters.
+  swap?: string;
 };
 
 // Each line is a list of segments; a segment with `chip` renders as a highlighted pill.
 const heroLines: Segment[][] = [
   // `italic` lists the letters to set in the italic cut.
   // `anchor` marks where the scroll flower starts (right after the word).
-  [{ text: "Hello, I'm" }, { text: "Saumya", anchor: true }],
+  [{ text: "Hello, I'm" }, { text: "Saumya", anchor: true, swap: "S" }],
   // `italicWord` sets one whole word of a segment in the italic cut.
   [
     { text: "A" },
-    { text: "Product Engineer", chip: "lime" },
+    { text: "Product Engineer", chip: "lime", swap: "og" },
     { text: "at the intersection of" },
   ],
   [
-    { text: "code", chip: "sky", bonny: true },
+    { text: "code", chip: "sky", swap: "o" },
     { text: "and" },
-    { text: "design.", chip: "yellow", bonny: true },
+    { text: "design.", chip: "yellow", swap: "g" },
   ],
 ];
 
@@ -73,7 +73,7 @@ export const intro = {
 };
 
 export const footer = {
-  heading: "Let's talk.",
+  heading: "Let's Talk.",
   blurb: "Let's build something exceptional together.",
 };
 

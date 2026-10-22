@@ -1,3 +1,4 @@
+import { ScriptText } from '../components/ScriptText'
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'motion/react'
 import { useRef, useState, type ElementType } from 'react'
 import { Link } from 'react-router-dom'
@@ -66,7 +67,7 @@ function Tile({ project, index }: { project: Project; index: number }) {
           >
             <div className="p-3 md:p-4">
               {/* The framed shot zooms in on hover; the box clips it. */}
-              <div ref={shotRef} className="relative w-full overflow-hidden rounded-xl shadow-[0_24px_60px_-20px_rgba(0,0,0,0.35)] transition-transform duration-700 ease-out">
+              <div ref={shotRef} className="relative w-full overflow-hidden rounded-xl max-md:aspect-[5/4] shadow-[0_24px_60px_-20px_rgba(0,0,0,0.35)] transition-transform duration-700 ease-out">
                 {video && image ? (
                   <video
                     src={video}
@@ -75,7 +76,7 @@ function Tile({ project, index }: { project: Project; index: number }) {
                     loop
                     playsInline
                     preload="metadata"
-                    className="block w-full"
+                    className="block w-full max-md:h-full max-md:object-cover max-md:object-left-top"
                     onMouseEnter={(e) => void e.currentTarget.play()}
                     onMouseLeave={(e) => {
                       e.currentTarget.pause()
@@ -83,7 +84,7 @@ function Tile({ project, index }: { project: Project; index: number }) {
                     }}
                   />
                 ) : image ? (
-                  <img src={image} alt={`${title} screenshot`} loading="lazy" className="block w-full" />
+                  <img src={image} alt={`${title} screenshot`} loading="lazy" className="block w-full max-md:h-full max-md:object-cover max-md:object-left-top" />
                 ) : (
                   <div className="aspect-[1600/878] w-full bg-paper">
                     <WorkArt art={art} />
@@ -140,7 +141,7 @@ export function Work() {
 
       <motion.div style={{ opacity: headOpacity }} className="relative mx-auto mt-6 max-w-2xl text-center md:mt-8">
         <p className="eyebrow text-ink/60">({work.label})</p>
-        <h2 className="mt-4 font-bonny text-5xl font-medium leading-none tracking-tight md:text-7xl">{work.heading}</h2>
+        <h2 className="mt-4 font-arima text-5xl font-medium leading-none tracking-tight md:text-7xl"><ScriptText text={work.heading} swap={{ Work: 'o' }} /></h2>
       </motion.div>
 
       <div className="relative mx-auto mt-8 grid max-w-6xl grid-cols-1 gap-x-6 gap-y-8 md:mt-12 md:grid-cols-2 md:gap-x-8 md:gap-y-10">

@@ -138,8 +138,8 @@ export function ScrollPath({ container }: { container: RefObject<HTMLElement | n
       const anchor = el.querySelector<HTMLElement>('[data-flower-anchor]')
       if (anchor) {
         const o = offsetWithin(anchor, el)
-        sx = o.x + anchor.offsetWidth + 64
-        sy = o.y + anchor.offsetHeight * 0.55
+        sx = o.x + anchor.offsetWidth + 40
+        sy = o.y + anchor.offsetHeight * 0.5
       }
       // The route bows out clear of the right-hand end of "at the intersection of".
       let bowX = Math.min(sx + 0.3 * w, w - 90)

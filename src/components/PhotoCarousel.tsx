@@ -30,7 +30,8 @@ export function PhotoCarousel({ photos }: { photos: Photo[] }) {
             className="absolute inset-0"
             style={photo.src ? undefined : { backgroundImage: photo.tint }}
           >
-            {photo.src && <img src={photo.src} alt={photo.caption || `Photo ${i + 1}`} className="size-full object-cover" style={{ objectPosition: photo.position, transform: photo.zoom ? `scale(${photo.zoom})` : undefined, transformOrigin: photo.origin }} />}
+            {photo.src && photo.fit === 'contain' && <img src={photo.src} alt="" aria-hidden className="absolute inset-0 size-full scale-110 object-cover blur-2xl" />}
+            {photo.src && <img src={photo.src} alt={photo.caption || `Photo ${i + 1}`} className={`relative size-full ${photo.fit === 'contain' ? 'object-contain' : 'object-cover'}`} style={{ objectPosition: photo.position, transform: photo.zoom ? `scale(${photo.zoom})` : undefined, transformOrigin: photo.origin }} />}
           </motion.div>
         </AnimatePresence>
         <div className="absolute inset-x-0 bottom-4 flex justify-center">

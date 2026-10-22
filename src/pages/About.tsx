@@ -56,16 +56,15 @@ function Intro() {
         </motion.p>
         <motion.h1
           {...fade}
-          className="mt-3 font-bonny text-4xl font-medium leading-[1.15] tracking-tight md:text-5xl"
+          className="mt-3 font-arima text-[1.75rem] font-medium leading-[1.15] tracking-tight sm:text-[2rem] md:text-[2.6rem]"
         >
           <span className="inline-block -rotate-2 rounded-[0.22em] bg-yellow px-[0.3em] pb-[0.06em] text-[#111]">
             Engineer
           </span>{" "}
           by training,
           <br />
-          {/* The second line starts under "by": an invisible copy of "Engineer " pushes it across (Bonny is wider than the old
-              heading font, so any further and "at heart" would wrap). */}
-          <span aria-hidden className="invisible">
+          {/* On wider screens an invisible copy of "Engineer " pushes the second line across so "designer" starts under "by". */}
+          <span aria-hidden className="invisible hidden md:inline">
             Engineer{" "}
           </span>
           <i className="inline-block rotate-2 rounded-[0.22em] bg-sky px-[0.3em] pb-[0.06em] text-[#111]">
@@ -89,7 +88,7 @@ function Intro() {
         </div>
         <motion.dl
           {...fade}
-          className="mt-8 grid gap-6 border-t border-line pt-6 sm:grid-cols-3"
+          className="mt-8 flex flex-wrap justify-between gap-x-8 gap-y-6 border-t border-line pt-6"
         >
           {aboutIntro.facts.map((f) => (
             <div key={f.k}>
@@ -229,7 +228,7 @@ function Heading({ lines }: { lines: readonly [string, string] }) {
   return (
     <motion.h2
       {...fade}
-      className="font-bonny text-4xl font-medium leading-[1.05] tracking-tight md:text-5xl"
+      className="font-arima text-[1.75rem] font-medium leading-[1.05] tracking-tight md:text-[2.6rem]"
     >
       {lines[0]} <span className="text-ink/45">{lines[1]}</span>
     </motion.h2>
@@ -333,7 +332,7 @@ function Into() {
               >
                 {VALUE_DOODLES[i % VALUE_DOODLES.length]}
               </svg>
-              <h3 className="mt-3 pr-16 font-bonny text-3xl font-medium leading-[1.05] tracking-tight md:pr-20 md:text-4xl">
+              <h3 className="mt-3 pr-16 font-arima text-[1.35rem] font-medium leading-[1.1] tracking-tight md:pr-20 md:text-[1.6rem]">
                 {v.title}
               </h3>
               <p className="mt-3 max-w-md text-base leading-relaxed text-[#111]/70">{v.body}</p>
@@ -347,7 +346,7 @@ function Into() {
 
 export default function About() {
   return (
-    <main className="relative z-10 bg-paper pb-32 md:pb-44">
+    <main className="relative z-10 bg-paper pb-32 font-manrope md:pb-44">
       <Intro />
       <Experience />
       <Tools />

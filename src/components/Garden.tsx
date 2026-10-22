@@ -170,7 +170,7 @@ export function Garden({ play }: { play: boolean }) {
     <div className="flex h-full w-full flex-col justify-end">
       <p className="mb-5 text-center text-sm text-[#111]/80 md:text-base">
         Welcome to my{' '}
-        <span className="relative inline-block font-bonny text-[1.2em] font-medium">
+        <span className="relative inline-block font-ingrid text-[1.9em]">
           <span className="px-[0.2em]" style={crayonStyle('yellow')}>garden</span>
           <Bee />
         </span>

@@ -1,23 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-170 -170 340 340">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- The cat from the nav bar (rose colourway: black cat, yellow eyes, deep pink circle), eyes open. -->
   <defs>
-    <radialGradient id="p" cx="50%" cy="90%" r="95%">
-      <stop offset="0%" stop-color="#ec6fa3"/>
-      <stop offset="55%" stop-color="#f48fb1"/>
-      <stop offset="100%" stop-color="#fbd0e0"/>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="0.2">
+      <stop offset="0" stop-color="#ffd9e1"/>
+      <stop offset="0.45" stop-color="#ffc2cf"/>
+      <stop offset="0.62" stop-color="#ffc2cf"/>
+      <stop offset="1" stop-color="#ffd9e1"/>
+    </linearGradient>
+    <radialGradient id="fur" cx="0.5" cy="0.28" r="0.8">
+      <stop offset="0" stop-color="#3d3a42"/>
+      <stop offset="0.55" stop-color="#1e1b21"/>
+      <stop offset="1" stop-color="#0d0b0f"/>
     </radialGradient>
-    <radialGradient id="c" cx="40%" cy="35%" r="70%">
-      <stop offset="0%" stop-color="#fff59d"/>
-      <stop offset="60%" stop-color="#fbc02d"/>
-      <stop offset="100%" stop-color="#e65100"/>
+    <radialGradient id="iris" cx="0.5" cy="0.6" r="0.7">
+      <stop offset="0" stop-color="#fff2ad"/>
+      <stop offset="0.5" stop-color="#ffc53d"/>
+      <stop offset="1" stop-color="#e5850f"/>
     </radialGradient>
+    <filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.4"/></filter>
+    <clipPath id="eyeL"><path d="M -10.4 -2.08 Q -1.3 -5.72 10.4 0.78 Q 8.58 6.5 0 7.02 Q -9.1 6.5 -10.4 -2.08 Z" transform="translate(36 61)"/></clipPath>
+    <clipPath id="eyeR"><path d="M 10.4 -2.08 Q 1.3 -5.72 -10.4 0.78 Q -8.58 6.5 0 7.02 Q 9.1 6.5 10.4 -2.08 Z" transform="translate(64 61)"/></clipPath>
   </defs>
-  <g fill="url(#p)" stroke="#e0508c" stroke-width="4" stroke-opacity="0.45">
-    <path id="a" d="M0 0 C-70 -30 -75 -140 0 -150 C75 -140 70 -30 0 0Z"/>
-    <use href="#a" transform="rotate(60)"/>
-    <use href="#a" transform="rotate(120)"/>
-    <use href="#a" transform="rotate(180)"/>
-    <use href="#a" transform="rotate(240)"/>
-    <use href="#a" transform="rotate(300)"/>
+  <circle cx="50" cy="50" r="50" fill="#eaa3b3"/>
+  <path fill="#2a1a12" opacity="0.3" transform="translate(0 3.5)" filter="url(#soft)" d="M50 88 C30 88 15 78 15 60 C15 48 18 40 23 34 L25.5 15.5 C26 13 28.5 12.4 30.4 13.8 L41 23.5 C44 22.7 47 22.4 50 22.4 C53 22.4 56 22.7 59 23.5 L69.6 13.8 C71.5 12.4 74 13 74.5 15.5 L77 34 C82 40 85 48 85 60 C85 78 70 88 50 88 Z"/>
+  <path fill="url(#fur)" stroke="url(#rim)" stroke-width="1" d="M50 88 C30 88 15 78 15 60 C15 48 18 40 23 34 L25.5 15.5 C26 13 28.5 12.4 30.4 13.8 L41 23.5 C44 22.7 47 22.4 50 22.4 C53 22.4 56 22.7 59 23.5 L69.6 13.8 C71.5 12.4 74 13 74.5 15.5 L77 34 C82 40 85 48 85 60 C85 78 70 88 50 88 Z"/>
+  <g transform="translate(36 61) scale(1.3)">
+    <path fill="url(#iris)" d="M -8 -1.6 Q -1 -4.4 8 0.6 Q 6.6 5 0 5.4 Q -7 5 -8 -1.6 Z"/>
   </g>
-  <circle r="34" fill="url(#c)"/>
+  <g transform="translate(64 61) scale(1.3)">
+    <path fill="url(#iris)" d="M 8 -1.6 Q 1 -4.4 -8 0.6 Q -6.6 5 0 5.4 Q 7 5 8 -1.6 Z"/>
+  </g>
+  <g clip-path="url(#eyeL)"><ellipse cx="36" cy="61.8" rx="1.6" ry="6" fill="#1b1206"/></g>
+  <g clip-path="url(#eyeR)"><ellipse cx="64" cy="61.8" rx="1.6" ry="6" fill="#1b1206"/></g>
 </svg>

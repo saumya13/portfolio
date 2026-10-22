@@ -23,7 +23,18 @@ const chipClass = { lime: 'bg-lime', sky: 'bg-sky', pink: 'bg-pink', yellow: 'bg
 
 // Sets the letters listed in `seg.italic` in the italic cut, with tight tracking so they tuck into their neighbours.
 function letters(seg: Segment) {
-  const { text, italic, italicWord } = seg
+  const { text, italic, italicWord, swap } = seg
+  if (swap) {
+    return [...text].map((ch, k) =>
+      swap.includes(ch) ? (
+        <span key={k} className={`font-ingrid leading-[0] ${ch === 'o' ? 'text-[1.9em]' : ch === 'g' ? 'text-[1.65em]' : 'text-[1.3em]'}`}>
+          {ch}
+        </span>
+      ) : (
+        ch
+      ),
+    )
+  }
   if (italicWord && text.includes(italicWord)) {
     const [before, after] = text.split(italicWord)
     return (
@@ -96,9 +107,9 @@ export function Hero() {
         <HeroStars mx={mx} my={my} w={w} h={h} />
       </motion.div>
       <motion.div style={{ scale, opacity }} className="relative flex h-full flex-col items-center justify-center px-6">
-        <motion.h1 initial="hidden" animate="show" className="text-center font-bonny [font-synthesis:none] text-[clamp(2rem,4vw,4.25rem)] leading-[1.38] tracking-[-0.02em]">
+        <motion.h1 initial="hidden" animate="show" className={`text-center font-arima [font-synthesis:none] text-[clamp(2rem,4vw,4.25rem)] leading-[1.38] tracking-[-0.02em]`}>
           {site.hero.lines.map((line, i) => (
-            <span key={i} className={`flex flex-wrap items-center justify-center gap-x-[0.28em] py-[0.04em] ${i >= 1 ? 'min-[400px]:text-[1.1em]' : ''}`}>
+            <span key={i} className={`flex flex-wrap items-center justify-center gap-x-[0.28em] py-[0.04em] ${i === 2 ? 'min-[400px]:text-[1.1em]' : i === 1 ? 'min-[400px]:text-[0.95em]' : ''}`}>
               {line.map((seg, j) => {
                 const words = seg.text.split(' ').filter(Boolean)
                 const first = count
@@ -113,12 +124,12 @@ export function Hero() {
                     key={j}
                     variants={chipVariants}
                     custom={wordDelay(first, i)}
-                    className={`inline-flex gap-x-[0.28em] rounded-[0.22em] px-[0.3em] pb-[0.06em] font-medium text-[#111] ${chipClass[seg.chip]} ${seg.big ? 'text-[1.5em]' : ''}`}
+                    className={`inline-flex gap-x-[0.28em] rounded-[0.22em] px-[0.3em] pb-[0.06em] text-[#111] ${chipClass[seg.chip]} ${seg.big ? 'text-[1.5em]' : ''}`}
                   >
                     {inner}
                   </motion.span>
                 ) : (
-                  <span key={j} data-flower-anchor={seg.anchor ? '' : undefined} className={`inline-flex gap-x-[0.28em] ${seg.anchor ? 'font-medium' : ''} ${seg.sans ? 'font-inter text-[0.9em] font-light tracking-[-0.03em]' : ''}`}>
+                  <span key={j} data-flower-anchor={seg.anchor ? '' : undefined} className={`inline-flex gap-x-[0.28em] ${seg.anchor ? 'font-medium' : ''} ${seg.sans ? 'font-manrope text-[0.9em] font-light tracking-[-0.03em]' : ''}`}>
                     {inner}
                   </span>
                 )
